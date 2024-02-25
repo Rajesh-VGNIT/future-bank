@@ -456,7 +456,7 @@
 
           <div class="col-lg-8 mt-5 mt-lg-0" data-aos="fade-left">
 
-            <form  role="form" id="emailForm" class="php-email-form">
+            <form  role="form" id="emailForm" onsubmit="return validateForm()" class="php-email-form">
               <div class="row">
                 <div class="col-md-6 form-group">
                   <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
@@ -509,7 +509,7 @@
 
 
 
-  <script>
+  <!-- <script>
         
     function sendEmail() {
      event.preventDefault();
@@ -539,7 +539,84 @@
              }
          );
      }
- </script>
+ </script> -->
+
+ <script>
+  function validateForm() {
+    event.preventDefault();
+    const name =  document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const subject = document.getElementById("subject").value;
+    const message = document.getElementById("message").value;
+    
+    // let name = false;
+
+
+    
+     // Basic Name validation
+     if (name == "") {
+         alert("Name must be filled out");
+         return false;
+      }
+
+      // Basic email validation
+     if (!isValidEmail(email)) {
+        alert("Please enter a valid email address.");
+        return false;
+      }
+      if (subject == "") {
+         alert("Subject must be filled out");
+         return false;
+      }
+      if (message == "") {
+         alert("Message must be filled out");
+         return false;
+      }
+
+
+    // You can add more validation for the message field if needed
+return true;
+   
+}
+
+function isValidEmail(email) {
+    // Basic email validation using regular expression
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function sendEmail() {
+    if (validateForm()) {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const subject = document.getElementById("subject").value;
+        const message = document.getElementById("message").value;
+
+
+       
+        emailjs.send("service_98oqjos", "template_lqutl9i", {
+            name: name,
+            email: email,
+            subject: subject,
+            message: message,
+        }).then(
+            function (response) {
+                alert("Your message sent successfully!!")
+                console.log("Email sent successfully", response);
+
+                // Clear form fields after sending
+                document.getElementById("name").value = "";
+                document.getElementById("email").value = "";
+                document.getElementById("subject").value = "";
+                document.getElementById("message").value = "";
+            },
+            function (error) {
+                console.error("Email sending failed", error);
+            }
+        );
+    }
+}
+</script>
  
 
   <!-- Vendor JS Files -->
